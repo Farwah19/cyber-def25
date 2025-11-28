@@ -1,47 +1,39 @@
+import pandas as pd
+import numpy as np
 import os
-import random
-from datetime import datetime, timedelta
 
-OUTPUT_DIR = "network_logs"
+print("="*60)
+print("Generating Test Network Logs")
+print("="*60)
 
-# Ensure output directory exists
-os.makedirs(OUTPUT_DIR, exist_ok=True)
+os.makedirs('network_logs', exist_ok=True)
 
-def random_ip():
-    return ".".join(str(random.randint(1, 254)) for _ in range(4))
+np.random.seed(123)
 
-def random_timestamp():
-    now = datetime.now()
-    delta = timedelta(seconds=random.randint(0, 86400))
-    return (now - delta).strftime("%Y-%m-%d %H:%M:%S")
+test_data = {
+    'packet_size': np.random.randint(50, 1500, 100),
+    'duration': np.random.uniform(0.1, 300, 100),
+    'src_bytes': np.random.randint(0, 30000, 100),
+    'dst_bytes': np.random.randint(0, 30000, 100),
+    'wrong_fragment': np.random.randint(0, 3, 100),
+    'urgent': np.random.randint(0, 3, 100),
+    'num_failed_logins': np.random.randint(0, 5, 100),
+    'num_file_creations': np.random.randint(0, 10, 100),
+    'num_access_files': np.random.randint(0, 15, 100),
+    'count': np.random.randint(0, 500, 100),
+    'srv_count': np.random.randint(0, 500, 100)
+}
 
-def generate_log_entry():
-    return (
-        f"{random_timestamp()}  "
-        f"SRC={random_ip()}  "
-        f"DST={random_ip()}  "
-        f"SPORT={random.randint(1, 65535)}  "
-        f"DPORT={random.randint(1, 65535)}  "
-        f"BYTES_SENT={random.randint(0, 30000)}  "
-        f"BYTES_RECV={random.randint(0, 30000)}  "
-        f"ENTROPY={round(random.uniform(1.0, 7.0), 2)}  "
-        f"FLAGS={random.randint(0, 63)}  "
-        f"FAILED_LOGINS={random.randint(0, 4)}  "
-        f"MALFORMED={random.randint(0, 2)}"
-    )
+test_df = pd.DataFrame(test_data)
 
-def generate_log_file(index):
-    num_entries = random.randint(50, 200)
-    filename = os.path.join(OUTPUT_DIR, f"logfile_{index}.log")
+test_df.loc[10:15, 'wrong_fragment'] = 4
+test_df.loc[10:15, 'num_failed_logins'] = 4
+test_df.loc[20:25, 'packet_size'] = 1450
+test_df.loc[20:25, 'duration'] = 250
 
-    with open(filename, "w") as f:
-        for _ in range(num_entries):
-            f.write(generate_log_entry() + "\n")
+output_file = 'network_logs/test_logs_001.csv'
+test_df.to_csv(output_file, index=False)
 
-    print(f"Generated {filename} with {num_entries} entries.")
-
-# Generate 10 logs
-for i in range(1, 11):
-    generate_log_file(i)
-
-print("All test log files generated successfully!")
+print(f"\n Created: {output_file}")
+print(f"Records: {len(test_df)}")
+print("="*60)
