@@ -2,10 +2,10 @@ pipeline {
     agent any
     
     environment {
-        DOCKER_USERNAME = 'your-dockerhub-username'  // Replace with your Docker Hub username
+        DOCKER_USERNAME = 'zumarr'  
         IMAGE_NAME = 'cyber-def25-malware-detector'
         IMAGE_TAG = "${BUILD_NUMBER}"
-        DOCKER_CREDENTIALS_ID = 'dockerhub-credentials'  // Jenkins credentials ID
+        DOCKER_CREDENTIALS_ID = 'dockerhub-credentials' 
     }
     
     stages {
