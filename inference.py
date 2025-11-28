@@ -8,7 +8,7 @@ print(" CYBER-DEF25 Malware Detection - Inference Engine ")
 print("="*60)
 
 MODEL_PATH = "model.pkl"
-INPUT_DIR = "network_logs"
+INPUT_DIR = "/input/logs"
 OUTPUT_DIR = "/output"
 OUTPUT_FILE = "/output/alerts.csv"
 
