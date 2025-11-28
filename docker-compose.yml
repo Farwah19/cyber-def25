@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  malware-detector:
+    image: ${DOCKER_USERNAME}/cyber-def25-malware-detector:latest
+    container_name: malware-detection-app
+    volumes:
+      # Mount host folder to container's input directory
+      - ./network_logs:/input/logs
+      # Mount output directory to save results
+      - ./output:/output
+    environment:
+      - PYTHONUNBUFFERED=1
+    stdin_open: true
+    tty: true
