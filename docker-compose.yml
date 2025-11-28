@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  malware-detector:
+    image: cyber-def25-detector:latest
+    container_name: malware-detection-app
+    volumes:
+      - ./network_logs:/input/logs
+      - ./output:/output
+    environment:
+      - PYTHONUNBUFFERED=1
